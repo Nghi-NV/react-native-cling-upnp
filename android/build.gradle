@@ -1,0 +1,81 @@
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.0'
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "26.0.2"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    packagingOptions {
+        exclude 'META-INF/beans.xml'
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'http://4thline.org/m2'
+    }
+    maven {
+        url 'https://maven.google.com/'
+        name 'Google'
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.facebook.react:react-native:+'
+    // Cling
+//     compile group: 'org.fourthline.cling', name: 'cling-core', version:'2.1.1'
+//     compile group: 'org.fourthline.cling', name: 'cling-support', version:'2.1.1'
+//     compile group: 'org.eclipse.jetty', name: 'jetty-server', version:'8.1.18.v20150929'
+//     compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version:'8.1.18.v20150929'
+//     compile group: 'org.eclipse.jetty', name: 'jetty-client', version:'8.1.18.v20150929'
+//     compile group: 'org.slf4j', name: 'slf4j-jdk14', version:'1.7.14'
+     compile('de.psdev.licensesdialog:licensesdialog:1.8.1') {
+         exclude module: 'support-v4'
+     }
+    compile files('src/libs/cling-core-2.1.1.jar')
+    compile files('src/libs/cling-support-2.1.1.jar')
+    compile files('src/libs/javax.servlet-3.0.0.v201112011016.jar')
+    compile files('src/libs/jetty-client-8.1.18.v20150929.jar')
+    compile files('src/libs/jetty-continuation-8.1.18.v20150929.jar')
+    compile files('src/libs/jetty-http-8.1.18.v20150929.jar')
+    compile files('src/libs/jetty-io-8.1.18.v20150929.jar')
+    compile files('src/libs/jetty-security-8.1.18.v20150929.jar')
+    compile files('src/libs/jetty-server-8.1.18.v20150929.jar')
+    compile files('src/libs/jetty-servlet-8.1.18.v20150929.jar')
+    compile files('src/libs/jetty-util-8.1.18.v20150929.jar')
+    compile files('src/libs/seamless-http-1.1.1.jar')
+    compile files('src/libs/seamless-swing-1.1.1.jar')
+    compile files('src/libs/seamless-util-1.1.1.jar')
+    compile files('src/libs/seamless-xml-1.1.1.jar')
+    compile files('src/libs/slf4j-api-1.7.14.jar')
+    compile files('src/libs/slf4j-jdk14-1.7.14.jar')
+
+    compile 'com.google.code.gson:gson:2.8.2'
+}
+  
