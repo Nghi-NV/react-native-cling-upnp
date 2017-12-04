@@ -128,6 +128,11 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
         reactContext.startActivity(new Intent(reactContext, Main.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
+    @ReactMethod
+    public void initUPNP() {
+        Log.d(TAG, "start initUPNP");
+    }
+
     private List<Item> getSongList() {
         Log.e("getSongList", "MediaServer.getAddress() ==> " + MediaServer.getAddress());
         List<Item> songList = new ArrayList<>();

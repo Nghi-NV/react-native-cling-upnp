@@ -19,6 +19,10 @@ UPNP.loadSongs = () => {
     RNUpnp.loadSongs();
 };
 
+UPNP.initUPNP = () => {
+    RNUpnp.initUPNP();
+};
+
 UPNP.pause = () => {
     RNUpnp.onPause();
 };
