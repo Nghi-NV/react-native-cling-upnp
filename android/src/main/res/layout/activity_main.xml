@@ -22,28 +22,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#000000"
     tools:context="org.droidupnp.Main">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
         android:background="#000000">
 
         <ImageView
             android:id="@+id/imvBack"
-            android:layout_width="?actionBarSize"
-            android:layout_height="?actionBarSize"
-            android:padding="16dp"
-            android:src="@drawable/ic_back_white" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/song_list_title"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textColor="#19c1ff"
+            android:textSize="16sp"
+            android:textStyle="bold" />
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.05dp"
+        android:background="#33cccccc" />
 
     <fragment
         android:id="@+id/content"

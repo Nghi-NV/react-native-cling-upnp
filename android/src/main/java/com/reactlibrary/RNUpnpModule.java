@@ -67,18 +67,6 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
         this.reactContext = reactContext;
 //        mActivity = this.getCurrentActivity();
 
-        // Use cling factory
-        if (factory == null)
-            factory = new org.droidupnp.controller.cling.Factory();
-
-        // Upnp service
-        if (upnpServiceController == null)
-            upnpServiceController = factory.createUpnpServiceController(reactContext);
-
-        upnpServiceController.getRendererDiscovery().addObserver(this);
-        upnpServiceController.addSelectedRendererObserver(this);
-
-        upnpServiceController.resume(reactContext);
     }
 
     @ReactMethod
@@ -131,6 +119,19 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
     @ReactMethod
     public void initUPNP() {
         Log.d(TAG, "start initUPNP");
+
+        // Use cling factory
+        if (factory == null)
+            factory = new org.droidupnp.controller.cling.Factory();
+
+        // Upnp service
+        if (upnpServiceController == null)
+            upnpServiceController = factory.createUpnpServiceController(reactContext);
+
+        upnpServiceController.getRendererDiscovery().addObserver(this);
+        upnpServiceController.addSelectedRendererObserver(this);
+
+        upnpServiceController.resume(reactContext);
     }
 
     private List<Item> getSongList() {

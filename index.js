@@ -3,12 +3,6 @@ import { NativeModules,DeviceEventEmitter } from 'react-native';
 
 const { RNUpnp } = NativeModules;
 
-// export default {
-//     testPing: function () {
-//         RNUpnp.ping();
-//     }
-// };
-
 const UPNP = {}
 
 UPNP.testPing = () => {

@@ -153,7 +153,7 @@ public class ContentDirectoryFragment extends ListFragment implements Observer {
 
             ImageView imageView = (ImageView) convertView.findViewById(R.id.icon);
             String id = entry.getDIDLObject().getParentID();
-            if (null != id) {
+            if (null != id && !id.trim().isEmpty()) {
                 imageView.setImageResource(R.drawable.ic_music_green);
             } else {
                 imageView.setImageResource(entry.getIcon());
@@ -471,13 +471,17 @@ public class ContentDirectoryFragment extends ListFragment implements Observer {
                 refresh();
             } else if (didl instanceof IDIDLItem) {
                 // Launch item
-                launchURI((IDIDLItem) didl);
+//                launchURI((IDIDLItem) didl);
 
                 WritableMap params = Arguments.createMap();
                 params.putString("songUrl", ((IDIDLItem) didl).getURI());
+                params.putString("title", ((IDIDLItem) didl).getTitle());
+                params.putString("desc", ((IDIDLItem) didl).getDescription());
                 RNUpnpModule.getReactContext()
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                         .emit("song_item", params);
+
+                getActivity().finish();
             }
         } catch (Exception e) {
             Log.e(TAG, "Unable to finish action after item click");
