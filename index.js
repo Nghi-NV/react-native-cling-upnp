@@ -17,6 +17,10 @@ UPNP.initUPNP = () => {
     RNUpnp.initUPNP();
 };
 
+UPNP.setCurrentSpeakerIP = (ip) => {
+    RNUpnp.setCurrentSpeakerIP(ip);
+};
+
 UPNP.pause = () => {
     RNUpnp.onPause();
 };

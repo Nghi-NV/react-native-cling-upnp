@@ -131,6 +131,12 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
     public void initUPNP() {
         Log.d(TAG, "start initUPNP");
 
+        if(null == list) {
+            list = new ArrayList<>();
+        } else {
+            list.clear();
+        }
+
         // Use cling factory
         if (factory == null)
             factory = new org.droidupnp.controller.cling.Factory();
@@ -143,6 +149,7 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
         upnpServiceController.addSelectedRendererObserver(this);
 
         upnpServiceController.resume(mReactContext);
+
     }
 
     private List<Item> getSongList() {
