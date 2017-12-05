@@ -49,13 +49,15 @@ import java.util.Observer;
 public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceDiscoveryObserver, Observer {
 
     private static final String TAG = RNUpnpModule.class.getName();
-    private static ReactApplicationContext reactContext = null;
+    private static ReactApplicationContext mReactContext = null;
 
 //    private Activity mActivity;
 
     // Controller
     public static IUpnpServiceController upnpServiceController = null;
     public static IFactory factory = null;
+
+    private static String mCurrentSpeakerIP;
 
     protected List<IUpnpDevice> list = new ArrayList<>();
 
@@ -64,9 +66,18 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
 
         Log.e("@@@@@@", "RNUpnpModule created");
 
-        this.reactContext = reactContext;
+        mReactContext = reactContext;
 //        mActivity = this.getCurrentActivity();
 
+    }
+
+    public static String getCurrentSpeakerIP() {
+        return mCurrentSpeakerIP;
+    }
+
+    @ReactMethod
+    public void setCurrentSpeakerIP(String currentSpeakerIP) {
+        mCurrentSpeakerIP = currentSpeakerIP;
     }
 
     @ReactMethod
@@ -96,7 +107,7 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
     }
 
     public static ReactApplicationContext getReactContext() {
-        return reactContext;
+        return mReactContext;
     }
 
     @Override
@@ -106,14 +117,14 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
 
     @ReactMethod
     public void ping() {
-        Toast.makeText(reactContext, "Hello bavv", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mReactContext, "Hello bavv", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "pingpong");
     }
 
     @ReactMethod
     public void loadSongs() {
         Log.d(TAG, "start loadMusics");
-        reactContext.startActivity(new Intent(reactContext, Main.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        mReactContext.startActivity(new Intent(mReactContext, Main.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     @ReactMethod
@@ -126,12 +137,12 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
 
         // Upnp service
         if (upnpServiceController == null)
-            upnpServiceController = factory.createUpnpServiceController(reactContext);
+            upnpServiceController = factory.createUpnpServiceController(mReactContext);
 
         upnpServiceController.getRendererDiscovery().addObserver(this);
         upnpServiceController.addSelectedRendererObserver(this);
 
-        upnpServiceController.resume(reactContext);
+        upnpServiceController.resume(mReactContext);
     }
 
     private List<Item> getSongList() {
@@ -148,7 +159,7 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
                 MediaStore.Audio.Media.DURATION,
                 MediaStore.Audio.Media.ALBUM
         };
-        Cursor cursor = reactContext.getContentResolver().query(uri, columns, null, null, null);
+        Cursor cursor = mReactContext.getContentResolver().query(uri, columns, null, null, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
@@ -214,7 +225,7 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
                 if (null == writableArray) return;
 
                 params.putArray("hosts", writableArray);
-                reactContext
+                mReactContext
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                         .emit("speaker-found", params);
             }

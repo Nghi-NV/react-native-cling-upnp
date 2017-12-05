@@ -471,17 +471,8 @@ public class ContentDirectoryFragment extends ListFragment implements Observer {
                 refresh();
             } else if (didl instanceof IDIDLItem) {
                 // Launch item
-//                launchURI((IDIDLItem) didl);
+                launchURI((IDIDLItem) didl);
 
-                WritableMap params = Arguments.createMap();
-                params.putString("songUrl", ((IDIDLItem) didl).getURI());
-                params.putString("title", ((IDIDLItem) didl).getTitle());
-                params.putString("desc", ((IDIDLItem) didl).getDescription());
-                RNUpnpModule.getReactContext()
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit("song_item", params);
-
-                getActivity().finish();
             }
         } catch (Exception e) {
             Log.e(TAG, "Unable to finish action after item click");
@@ -523,6 +514,16 @@ public class ContentDirectoryFragment extends ListFragment implements Observer {
     private void launchURIRenderer(IDIDLItem uri) {
         IRendererCommand rendererCommand = Main.factory.createRendererCommand(Main.factory.createRendererState());
         rendererCommand.launchItem(uri);
+
+        WritableMap params = Arguments.createMap();
+        params.putString("songUrl", uri.getURI());
+        params.putString("title", uri.getTitle());
+        params.putString("desc", uri.getDescription());
+        RNUpnpModule.getReactContext()
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("song_item", params);
+
+        getActivity().finish();
     }
 
     @Override

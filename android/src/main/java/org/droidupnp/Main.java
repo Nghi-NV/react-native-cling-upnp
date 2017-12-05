@@ -22,6 +22,7 @@ package org.droidupnp;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -94,6 +95,13 @@ public class Main extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Log.d(TAG, "onCreated : " + savedInstanceState + factory + upnpServiceController);
+
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        if(tabletSize) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         // Use cling factory
         if (factory == null)
