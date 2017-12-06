@@ -26,6 +26,7 @@ import org.droidupnp.controller.upnp.IUpnpServiceController;
 import org.droidupnp.model.cling.CDevice;
 import org.droidupnp.model.mediaserver.ContentDirectoryService;
 import org.droidupnp.model.mediaserver.MediaServer;
+import org.droidupnp.model.upnp.CallableRendererFilter;
 import org.droidupnp.model.upnp.IDeviceDiscoveryObserver;
 import org.droidupnp.model.upnp.IFactory;
 import org.droidupnp.model.upnp.IUpnpDevice;
@@ -33,6 +34,7 @@ import org.droidupnp.utils.ReactNativeJsonUtils;
 import org.droidupnp.view.DeviceDisplay;
 import org.droidupnp.view.SettingsActivity;
 import org.fourthline.cling.model.meta.RemoteDevice;
+import org.fourthline.cling.model.meta.RemoteDeviceIdentity;
 import org.fourthline.cling.support.model.PersonWithRole;
 import org.fourthline.cling.support.model.Res;
 import org.fourthline.cling.support.model.item.Item;
@@ -42,6 +44,7 @@ import org.json.JSONObject;
 import org.seamless.util.MimeType;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -78,6 +81,8 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
     @ReactMethod
     public void setCurrentSpeakerIP(String currentSpeakerIP) {
         mCurrentSpeakerIP = currentSpeakerIP;
+
+        Log.e("setCurrentSpeakerIP", "currentSpeakerIP ==> " + currentSpeakerIP);
     }
 
     @ReactMethod
@@ -131,7 +136,7 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
     public void initUPNP() {
         Log.d(TAG, "start initUPNP");
 
-        if(null == list) {
+        if (null == list) {
             list = new ArrayList<>();
         } else {
             list.clear();
@@ -150,6 +155,29 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
 
         upnpServiceController.resume(mReactContext);
 
+        selectRenderer();
+    }
+
+    public static void selectRenderer() {
+        if (null == mCurrentSpeakerIP || mCurrentSpeakerIP.trim().isEmpty()) return;
+
+        final Collection<IUpnpDevice> upnpDevices = upnpServiceController.getServiceListener()
+                .getFilteredDeviceList(new CallableRendererFilter());
+
+        ArrayList<DeviceDisplay> list = new ArrayList<DeviceDisplay>();
+        for (IUpnpDevice upnpDevice : upnpDevices)
+            list.add(new DeviceDisplay(upnpDevice));
+
+        for (DeviceDisplay deviceDisplay : list) {
+            CDevice cDevice = ((CDevice) deviceDisplay.getDevice());
+            RemoteDevice remoteDevice = (RemoteDevice) cDevice.getDevice();
+            RemoteDeviceIdentity remoteDeviceIdentity = remoteDevice.getIdentity();
+            String host = remoteDeviceIdentity.getDescriptorURL().getHost();
+            if (mCurrentSpeakerIP.equals(host)) {
+                upnpServiceController.setSelectedRenderer(deviceDisplay.getDevice(), false);
+                return;
+            }
+        }
     }
 
     private List<Item> getSongList() {

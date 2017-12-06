@@ -483,21 +483,26 @@ public class ContentDirectoryFragment extends ListFragment implements Observer {
     private void launchURI(final IDIDLItem uri) {
         if (Main.upnpServiceController.getSelectedRenderer() == null) {
             // No renderer selected yet, open a popup to select one
+
+            RNUpnpModule.selectRenderer();
+
+
             final Activity a = getActivity();
             if (a != null) {
                 a.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            RendererDialog rendererDialog = new RendererDialog();
-                            rendererDialog.setCallback(new Callable<Void>() {
-                                @Override
-                                public Void call() throws Exception {
-                                    launchURIRenderer(uri);
-                                    return null;
-                                }
-                            });
-                            rendererDialog.show(getActivity().getFragmentManager(), "RendererDialog");
+                            Toast.makeText(a, "Please try again!", Toast.LENGTH_SHORT).show();
+//                            RendererDialog rendererDialog = new RendererDialog();
+//                            rendererDialog.setCallback(new Callable<Void>() {
+//                                @Override
+//                                public Void call() throws Exception {
+//                                    launchURIRenderer(uri);
+//                                    return null;
+//                                }
+//                            });
+//                            rendererDialog.show(getActivity().getFragmentManager(), "RendererDialog");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
