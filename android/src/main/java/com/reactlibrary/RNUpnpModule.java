@@ -180,6 +180,11 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
         }
     }
 
+    @ReactMethod
+    public  void reloadSpeakers() {
+        writeSpeakerList();
+    }
+
     private List<Item> getSongList() {
         Log.e("getSongList", "MediaServer.getAddress() ==> " + MediaServer.getAddress());
         List<Item> songList = new ArrayList<>();
@@ -255,16 +260,20 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
                 }
                 Log.v(TAG, "addedDevice : " + list.size());
 
-                WritableMap params = Arguments.createMap();
-                WritableArray writableArray = getHostsAsWritableArray();
-                if (null == writableArray) return;
-
-                params.putArray("hosts", writableArray);
-                mReactContext
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit("speaker-found", params);
+                writeSpeakerList();
             }
         });
+    }
+
+    public void writeSpeakerList() {
+        WritableMap params = Arguments.createMap();
+        WritableArray writableArray = getHostsAsWritableArray();
+        if (null == writableArray) return;
+
+        params.putArray("hosts", writableArray);
+        mReactContext
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("speaker-found", params);
     }
 
     @Override
