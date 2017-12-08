@@ -17,6 +17,10 @@ UPNP.initUPNP = () => {
     RNUpnp.initUPNP();
 };
 
+UPNP.reloadSpeakers = () => {
+    RNUpnp.reloadSpeakers();
+};
+
 UPNP.setCurrentSpeakerIP = (ip) => {
     RNUpnp.setCurrentSpeakerIP(ip);
 };
