@@ -181,7 +181,7 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
     }
 
     @ReactMethod
-    public  void reloadSpeakers() {
+    public void reloadSpeakers() {
         writeSpeakerList();
     }
 
@@ -326,9 +326,7 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
 
         WritableArray array = new WritableNativeArray();
         for (String host : hostList) {
-            WritableMap map = new WritableNativeMap();
-            map.putString(String.valueOf(hostList.indexOf(host)), host);
-            array.pushMap(map);
+            array.pushString(host);
         }
         return array;
     }
