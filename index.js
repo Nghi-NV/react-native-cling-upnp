@@ -29,6 +29,14 @@ UPNP.pause = () => {
     RNUpnp.onPause();
 };
 
+UPNP.next  = () => {
+    RNUpnp.next();
+};
+
+UPNP.previous = () => {
+    RNUpnp.previous();
+};
+
 UPNP.refresh = () => {
     RNUpnp.refresh();
 };

@@ -29,7 +29,9 @@ import org.droidupnp.model.mediaserver.MediaServer;
 import org.droidupnp.model.upnp.CallableRendererFilter;
 import org.droidupnp.model.upnp.IDeviceDiscoveryObserver;
 import org.droidupnp.model.upnp.IFactory;
+import org.droidupnp.model.upnp.IRendererCommand;
 import org.droidupnp.model.upnp.IUpnpDevice;
+import org.droidupnp.model.upnp.didl.IDIDLItem;
 import org.droidupnp.utils.ReactNativeJsonUtils;
 import org.droidupnp.view.DeviceDisplay;
 import org.droidupnp.view.SettingsActivity;
@@ -160,6 +162,7 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
 
     public static void selectRenderer() {
         if (null == mCurrentSpeakerIP || mCurrentSpeakerIP.trim().isEmpty()) return;
+        if (null == upnpServiceController) return;
 
         final Collection<IUpnpDevice> upnpDevices = upnpServiceController.getServiceListener()
                 .getFilteredDeviceList(new CallableRendererFilter());
@@ -178,6 +181,18 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
                 return;
             }
         }
+    }
+
+    @ReactMethod
+    public void next() {
+        IRendererCommand rendererCommand = factory.createRendererCommand(factory.createRendererState());
+        if (null != rendererCommand) rendererCommand.commandNext();
+    }
+
+    @ReactMethod
+    public void previous() {
+        IRendererCommand rendererCommand = factory.createRendererCommand(factory.createRendererState());
+        if (null != rendererCommand) rendererCommand.commandPrevious();
     }
 
     @ReactMethod
@@ -302,7 +317,9 @@ public class RNUpnpModule extends ReactContextBaseJavaModule implements IDeviceD
         UiThreadUtil.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                IUpnpDevice device = Main.upnpServiceController.getSelectedRenderer();
+                if (null == upnpServiceController) return;
+
+                IUpnpDevice device = upnpServiceController.getSelectedRenderer();
                 if (device != null) {
                     addedDevice(device);
                 }

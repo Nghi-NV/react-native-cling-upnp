@@ -45,6 +45,7 @@ import com.reactlibrary.R;
 import com.reactlibrary.RNUpnpModule;
 
 import org.droidupnp.Main;
+import org.droidupnp.model.cling.CDevice;
 import org.droidupnp.model.upnp.CallableContentDirectoryFilter;
 import org.droidupnp.model.upnp.IContentDirectoryCommand;
 import org.droidupnp.model.upnp.IDeviceDiscoveryObserver;
@@ -55,6 +56,9 @@ import org.droidupnp.model.upnp.didl.IDIDLContainer;
 import org.droidupnp.model.upnp.didl.IDIDLItem;
 import org.droidupnp.model.upnp.didl.IDIDLObject;
 import org.droidupnp.model.upnp.didl.IDIDLParentContainer;
+import org.fourthline.cling.model.meta.LocalDevice;
+import org.fourthline.cling.model.meta.RemoteDevice;
+import org.fourthline.cling.model.meta.RemoteDeviceIdentity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -402,8 +406,16 @@ public class ContentDirectoryFragment extends ListFragment implements Observer {
                     .getFilteredDeviceList(new CallableContentDirectoryFilter());
 
             ArrayList<DIDLObjectDisplay> list = new ArrayList<DIDLObjectDisplay>();
-            for (IUpnpDevice upnpDevice : upnpDevices)
-                list.add(new DIDLObjectDisplay(new DIDLDevice(upnpDevice)));
+            for (IUpnpDevice upnpDevice : upnpDevices) {
+                CDevice cDevice = ((CDevice) upnpDevice);
+                if(null != cDevice &&
+                        null != cDevice.getDevice() &&
+                        cDevice.getDevice() instanceof LocalDevice) {
+//                    LocalDevice localDevice = (LocalDevice) cDevice.getDevice();
+                    list.add(new DIDLObjectDisplay(new DIDLDevice(upnpDevice)));
+                    break;
+                }
+            }
 
             try {
                 ContentCallback cc = new ContentCallback(contentList);

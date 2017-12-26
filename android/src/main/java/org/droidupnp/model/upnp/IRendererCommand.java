@@ -31,6 +31,10 @@ public interface IRendererCommand {
 	// / Status
 	public void commandPlay();
 
+	public void commandNext();
+
+	public void commandPrevious();
+
 	public void commandStop();
 
 	public void commandPause();

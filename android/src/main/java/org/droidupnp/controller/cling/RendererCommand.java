@@ -34,8 +34,10 @@ import org.fourthline.cling.model.types.UDAServiceType;
 import org.fourthline.cling.support.avtransport.callback.GetMediaInfo;
 import org.fourthline.cling.support.avtransport.callback.GetPositionInfo;
 import org.fourthline.cling.support.avtransport.callback.GetTransportInfo;
+import org.fourthline.cling.support.avtransport.callback.Next;
 import org.fourthline.cling.support.avtransport.callback.Pause;
 import org.fourthline.cling.support.avtransport.callback.Play;
+import org.fourthline.cling.support.avtransport.callback.Previous;
 import org.fourthline.cling.support.avtransport.callback.Seek;
 import org.fourthline.cling.support.avtransport.callback.SetAVTransportURI;
 import org.fourthline.cling.support.avtransport.callback.Stop;
@@ -137,6 +139,48 @@ public class RendererCommand implements Runnable, IRendererCommand {
 			public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2)
 			{
 				Log.w(TAG, "Fail to play ! " + arg2);
+			}
+		});
+	}
+
+	@Override
+	public void commandNext() {
+		if (getAVTransportService() == null)
+			return;
+
+		controlPoint.execute(new Next(getAVTransportService()) {
+			@Override
+			public void success(ActionInvocation invocation)
+			{
+				Log.v(TAG, "Success next ! ");
+				// TODO update player state
+			}
+
+			@Override
+			public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2)
+			{
+				Log.w(TAG, "Fail to next ! " + arg2);
+			}
+		});
+	}
+
+	@Override
+	public void commandPrevious() {
+		if (getAVTransportService() == null)
+			return;
+
+		controlPoint.execute(new Previous(getAVTransportService()) {
+			@Override
+			public void success(ActionInvocation invocation)
+			{
+				Log.v(TAG, "Success previous ! ");
+				// TODO update player state
+			}
+
+			@Override
+			public void failure(ActionInvocation arg0, UpnpResponse arg1, String arg2)
+			{
+				Log.w(TAG, "Fail to previous ! " + arg2);
 			}
 		});
 	}
