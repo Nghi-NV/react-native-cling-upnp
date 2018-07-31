@@ -1,11 +1,8 @@
 
-#if __has_include("RCTBridgeModule.h")
-#import "RCTBridgeModule.h"
-#else
 #import <React/RCTBridgeModule.h>
-#endif
+#import <CocoaSSDP/SSDPServiceBrowser.h>
+@interface RNUpnp : NSObject <RCTBridgeModule, SSDPServiceBrowserDelegate>
 
-@interface RNUpnp : NSObject <RCTBridgeModule>
-
+@property (nonatomic, weak) RCTBridge *bridge;
 @end
   
